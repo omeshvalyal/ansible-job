@@ -12,7 +12,11 @@ pipeline {
  stage('Execute Ansible Playbook') {
             steps {
                 script {
-                    ansible-playbook myfile.yaml
+                     ansiblePlaybook(
+                        playbook: 'myfile.yaml',
+                        inventory: 'hosts',
+                        //credentialsId: 'your_ansible_credential_id'
+                    )
                 }
             }
         }
