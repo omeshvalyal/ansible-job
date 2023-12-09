@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     ansible-playbook myfile.yaml
-                    )
                 }
             }
         }
