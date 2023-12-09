@@ -12,7 +12,7 @@ pipeline {
  stage('Execute Ansible Playbook') {
             steps {
                 script {
-                    ansible-playbook 
+                    ansible-playbook myfile.yaml
                     )
                 }
             }
