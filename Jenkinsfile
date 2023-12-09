@@ -12,10 +12,7 @@ pipeline {
  stage('Execute Ansible Playbook') {
             steps {
                 script {
-                    // Replace 'your-playbook.yml' with the actual name of your Ansible playbook
-                    ansiblePlaybook(
-                        playbook: '/home/ansible/my_play/start-tom.yaml',
-                        inventory: '/etc/ansible/hosts'
+                    ansible-playbook 
                     )
                 }
             }
