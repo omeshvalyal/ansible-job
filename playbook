@@ -1,0 +1,36 @@
+---
+- name: Check and Manage Tomcat Service
+  hosts: [appserver]
+  become: yes  # Run tasks with elevated privileges
+
+  tasks:
+    - name: Check the availability of tomcat.service file
+      ansible.builtin.stat:
+        path: /etc/systemd/system/tomcat.service
+      register: tomcat_service_file
+
+    - name: Get Tomcat service status
+      ansible.builtin.service_facts:
+      when: tomcat_service_file.stat.exists
+
+    - name: Display message if Tomcat is already running
+      debug:
+        msg: "Tomcat is already running."
+      when: "'tomcat' in ansible_facts.services and ansible_facts.services['tomcat'].state == 'running'"
+
+    - name: Start Tomcat service if it is stopped
+      ansible.builtin.systemd:
+        name: tomcat
+        state: started
+      when: tomcat_service_file.stat.exists and "'tomcat' in ansible_facts.services and ansible_facts.services['tomcat'].state == 'stopped'"
+      register: start_tomcat_result
+
+    - name: Display message if Tomcat service is started
+      debug:
+        msg: "Tomcat service is running."
+      when: start_tomcat_result.changed
+
+    - name: Display message if an error occurred while starting the service
+      debug:
+        msg: "An error occurred while starting Tomcat service."
+      when: start_tomcat_result.failed
