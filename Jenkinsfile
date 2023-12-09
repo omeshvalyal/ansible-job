@@ -9,36 +9,16 @@ pipeline {
                 }
             }
         }
-
-        // Add more stages as needed for your build, test, and deployment steps
-        stage('Build') {
+ stage('Execute Ansible Playbook') {
             steps {
-                echo 'Build your code here'
-                // Add your build steps
+                script {
+                    // Replace 'your-playbook.yml' with the actual name of your Ansible playbook
+                    ansiblePlaybook(
+                        playbook: '/home/ansible/my_play/start-tom.yaml',
+                        inventory: '/etc/ansible/hosts'
+                    )
+                }
             }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Run tests here'
-                // Add your test steps
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploy your application'
-                // Add your deployment steps
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
